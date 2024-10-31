@@ -17,6 +17,7 @@ const {
   convertVNDtoUSD,
   convertUSDToVND,
 } = require("./apis");
+const { getAllCoins, getCoinDetails } = require("./apicoin");
 
 dotenv.config();
 
@@ -76,7 +77,6 @@ async function main() {
           Giới thiệu:
           ${data.introduce}
 `;
-
         client.sendMessage(
           event?.clan_id,
           event?.channel_id,
@@ -86,7 +86,7 @@ async function main() {
           [],
           [
             {
-              url: data.image || "default-image-url.jpg",
+              url: data.icon || "default-image-url.jpg",
               filetype: "image/jpeg",
             },
           ],
@@ -354,6 +354,8 @@ async function main() {
 - *currency : Giá ngoại tệ
 - *vndtousd <amount>: Chuyển đổi VND sang USD
 - *usdtovnd <amount>: Chuyển đổi USD sang VND
+- *coins : Danh sách tiền mã hóa
+- *coins <symbol>: Thông tin chi tiết về tiền mã hóa
   `;
       client.sendMessage(
         event?.clan_id,
@@ -517,24 +519,24 @@ async function main() {
     if (event?.content?.t === "*currency") {
       try {
         const data = await getForeignCurrency();
-         let table = `| ${"Currency Code".padEnd(
-           12
-         )} | ${"Currency Name".padEnd(18)} | ${"Buy".padStart(
-           10
-         )} | ${"Transfer".padStart(10)} | ${"Sell".padStart(10)} |\n`;
-         table += `|${"-".repeat(14)}|${"-".repeat(20)}|${"-".repeat(
-           12
-         )}|${"-".repeat(12)}|${"-".repeat(12)}|\n`;
+        let table = `| ${"Currency Code".padEnd(12)} | ${"Currency Name".padEnd(
+          18
+        )} | ${"Buy".padStart(10)} | ${"Transfer".padStart(
+          10
+        )} | ${"Sell".padStart(10)} |\n`;
+        table += `|${"-".repeat(14)}|${"-".repeat(20)}|${"-".repeat(
+          12
+        )}|${"-".repeat(12)}|${"-".repeat(12)}|\n`;
 
-         Object.values(data).forEach((item) => {
-           table += `| ${item.CurrencyCode.padEnd(
-             12
-           )} | ${item.CurrencyName.padEnd(18)} | ${item.Buy.padStart(
-             10
-           )} | ${item.Transfer.padStart(10)} | ${item.Sell.padStart(10)} |\n`;
-         });
+        Object.values(data).forEach((item) => {
+          table += `| ${item.CurrencyCode.padEnd(
+            12
+          )} | ${item.CurrencyName.padEnd(18)} | ${item.Buy.padStart(
+            10
+          )} | ${item.Transfer.padStart(10)} | ${item.Sell.padStart(10)} |\n`;
+        });
 
-         console.log(table);
+        console.log(table);
         // Send the message back to the user
         client.sendMessage(
           event?.clan_id,
@@ -599,6 +601,85 @@ async function main() {
 
         // Tạo thông điệp
         const message = `Chuyển đổi ${symbol} USD sang VND: ${formattedData} VNĐ`;
+        client.sendMessage(
+          event?.clan_id,
+          event?.channel_id,
+          2,
+          event?.is_public,
+          { t: message },
+          [],
+          [],
+          [
+            {
+              message_id: "",
+              message_ref_id: event.message_id,
+              ref_type: 0,
+              message_sender_id: event.sender_id,
+              message_sender_username: event.username,
+              mesages_sender_avatar: event.avatar,
+              message_sender_clan_nick: event.clan_nick,
+              message_sender_display_name: event.display_name,
+              content: JSON.stringify(event.content),
+              has_attachment: true,
+            },
+          ]
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    if (event?.content?.t === "*coins") {
+      try {
+        const data = await getAllCoins();
+        const response = `
+          Danh sách các giao dịch coins:
+            ${data.join("\n")}
+          `;
+
+        client.sendMessage(
+          event?.clan_id,
+          event?.channel_id,
+          2,
+          event?.is_public,
+          { t: response }
+        );
+      } catch (error) {
+        console.error("Error fetching crypto list:", error);
+        client.sendMessage(
+          event?.clan_id,
+          event?.channel_id,
+          2,
+          event?.is_public,
+          { t: "Có lỗi xảy ra khi lấy danh sách sàn giao dịch." }
+        );
+      }
+    }
+
+    if (event?.content?.t.startsWith("*coins ")) {
+      try {
+        const symbol = event.content.t.slice(7).trim();
+        const coin = await getCoinDetails(symbol);
+
+        const message = `
+    Thông tin ${coin.symbol}:
+    - Giá thay đổi: ${coin.priceChange}
+    - Phần trăm thay đổi giá: ${coin.priceChangePercent}%
+    - Giá trung bình: ${coin.weightedAvgPrice}
+    - Giá mở cửa: ${coin.openPrice}
+    - Giá cao nhất: ${coin.highPrice}
+    - Giá thấp nhất: ${coin.lowPrice}
+    - Giá cuối cùng: ${coin.lastPrice}
+    - Số lượng cuối cùng: ${coin.lastQty}
+    - Giá bid: ${coin.bidPrice} (Số lượng: ${coin.bidQty})
+    - Giá ask: ${coin.askPrice} (Số lượng: ${coin.askQty})
+    - Khối lượng giao dịch: ${coin.volume}
+    - Khối lượng quote: ${coin.quoteVolume}
+    - Thời gian mở cửa: ${new Date(coin.openTime).toLocaleString()}
+    - Thời gian đóng cửa: ${new Date(coin.closeTime).toLocaleString()}
+    - Số giao dịch: ${coin.count}
+  `;
+
         client.sendMessage(
           event?.clan_id,
           event?.channel_id,
