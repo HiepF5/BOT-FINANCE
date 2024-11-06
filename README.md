@@ -20,3 +20,30 @@ Copy `.env.example` to `.env` and replace it with your application token.
 # development
 $ yarn start
 ```
+# Hướng dẫn sử dụng bot
+
+### Danh sách các lệnh có sẵn:
+
+- `*ping`: Kiểm tra trạng thái của bot.
+- `*cp <symbol>`: Lấy thông tin chi tiết về cổ phiếu hoặc tiền mã hóa.
+- `*price <symbol>`: Xem giá hiện tại của cổ phiếu hoặc tiền mã hóa.
+- `*cap <symbol>`: Xem vốn hóa thị trường của cổ phiếu hoặc tiền mã hóa.
+- `*peers <symbol>`: Xem danh sách các cổ phiếu hoặc tiền mã hóa cùng ngành.
+- `*news <symbol>`: Xem tin tức liên quan đến cổ phiếu hoặc tiền mã hóa.
+- `*compare <symbol1> <symbol2>`: So sánh hai mã cổ phiếu hoặc tiền mã hóa.
+- `*about`: Giới thiệu về bot.
+- `*overview <symbol>`: Xem thông tin tổng quan về cổ phiếu hoặc tiền mã hóa.
+- `*recommend <symbol>`: Đề xuất cổ phiếu hoặc tiền mã hóa.
+- `*crypto`: Xem danh sách các sàn giao dịch tiền mã hóa.
+- `*gold`: Xem giá vàng.
+- `*currency`: Xem giá ngoại tệ.
+- `*vndtousd <amount>`: Chuyển đổi VND sang USD.
+- `*usdtovnd <amount>`: Chuyển đổi USD sang VND.
+- `*coins`: Xem danh sách tiền mã hóa.
+- `*coins <symbol>`: Xem thông tin chi tiết về tiền mã hóa.
+
+### Cách sử dụng
+Chỉ cần gõ lệnh vào khung chat theo định dạng như trên, ví dụ: `*price BTC` để lấy giá hiện tại của Bitcoin, hoặc `*vndtousd 1000000` để chuyển đổi 1,000,000 VND sang USD.
+cp MBB
+price 
+Bot sẽ trả về thông tin tương ứng với lệnh bạn đã nhập. Hãy thử và khám phá các tính năng hữu ích của bot!
