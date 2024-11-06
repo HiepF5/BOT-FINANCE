@@ -44,9 +44,10 @@ $ yarn start
 
 ### Cách sử dụng
 Chỉ cần gõ lệnh vào khung chat theo định dạng như trên, 
-ví dụ: `*price BTC` để lấy giá hiện tại của Bitcoin, 
-`*vndtousd 1000000` để chuyển đổi 1,000,000 VND sang USD.
-`*cp MBB` để lấy thông tin cổ phiếu MB BANK
-`*coins` BNBBTC lấy Thông tin BNBBTC
-`*price AAPL` Giá hiện tại của AAPL
+ví dụ: 
+- `*price BTC` để lấy giá hiện tại của Bitcoin, 
+- `*vndtousd 1000000` để chuyển đổi 1,000,000 VND sang USD.
+- `*cp MBB` để lấy thông tin cổ phiếu MB BANK
+- `*coins` BNBBTC lấy Thông tin BNBBTC
+- `*price AAPL` Giá hiện tại của AAPL
 Bot sẽ trả về thông tin tương ứng với lệnh bạn đã nhập. Hãy thử và khám phá các tính năng hữu ích của bot!
