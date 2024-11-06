@@ -45,7 +45,6 @@ $ yarn start
 ### Cách sử dụng
 Chỉ cần gõ lệnh vào khung chat theo định dạng như trên, 
 ví dụ: 
-- `*price BTC` để lấy giá hiện tại của Bitcoin, 
 - `*vndtousd 1000000` để chuyển đổi 1,000,000 VND sang USD.
 - `*cp MBB` để lấy thông tin cổ phiếu MB BANK
 - `*coins` BNBBTC lấy Thông tin BNBBTC
